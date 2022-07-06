@@ -1,7 +1,7 @@
-$computers = Get-Content -Path "C:\Users\gabriel\Documents\installs\computer.txt"
+$computers = Get-Content -Path "C:\Users\username\Documents\installs\computer.txt"
 $log = "c$\Program Files (x86)\Cobian Backup 11\Logs\log 2022-06-0*.txt"
-$up = "C:\Users\gabriel\Documents\installs\cobian_up.txt"
-$down = "C:\Users\gabriel\Documents\installs\cobian_down.txt"
+$up = "C:\Users\username\Documents\installs\cobian_up.txt"
+$down = "C:\Users\username\Documents\installs\cobian_down.txt"
 $date = Get-Date -format dd/MM/yy
 
 foreach($computer in $computers){
