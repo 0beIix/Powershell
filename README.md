@@ -1,2 +1,2 @@
 # Powershell
-Different PowerShell scripts that automate tasks. 
+Different PowerShell scripts 
