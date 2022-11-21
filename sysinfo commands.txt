@@ -1,0 +1,89 @@
+
+				-------------------------------
+				------- System commands -------
+				-------------------------------
+
+General info
+	systeminfo
+
+BASIC HARDWARE INFO WITH WMIC	
+	wmic /?					= Help - list options
+	wmic cpu /?				= More options for cpu
+	wmic cpu list brief		= Basic cpu info
+
+SSD INFO
+	Get-Disk
+	
+	Get-WmiObject win32_diskdrive
+
+	Get-WmiObject win32_diskdrive | where { $_.model -match ‘SSD’}
+
+CPU INFO
+	Get-WmiObject Win32_Processor 
+	 
+	more info
+		Get-WmiObject Win32_Processor | Select-Object -Property *
+		
+MAC INFO
+	getmac
+
+INSTALLED SOFTWARE 
+	Get-WmiObject -Class Win32_Product | select Name, Version | sort-object -property Name
+
+MOTHERBORD INFO
+	wmic baseboard get product,Manufacturer,Version,SerialNumber
+	
+CHANGE HOSTNAME 
+	CMD
+		WMIC computersystem where caption='OLD-PC-NAME' rename 'NEW-PC-NAME'
+	
+	Powershell
+		Rename-Computer -NewName "NEW-PC-NAME"
+
+Logged on user 
+	Get-WMIObject -class Win32_ComputerSystem | select username
+	query user /SERVER:servername
+	logoff id
+	
+Check image 
+	DISM.exe /Online /Cleanup-image /Scanhealth
+
+	DISM.exe /Online /Cleanup-image /Restorehealth
+	
+Search for software	
+	Get-WmiObject -Class win32_product -filter "name LIKE 'LibreOffice%'"
+	
+	Get-WmiObject -Class Win32_Product | Sort-Object -Property Vendor | Select-Object Vendor, Name
+	
+	Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -Match "LibreOffice"} | Select-Object Name
+	
+		on remote pc
+	Get-WmiObject Win32_Product -ComputerName HOSTNAME | select Name,Version
+	
+Find activation Key
+	Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform    ->   BackupProductKey
+	
+	Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform" | select-object BackupProductKeyDefault
+	
+Bios info 
+	gwmi win32_Bios | format-list -property *
+	
+win update config
+	Get-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\" -name 'UseWUServer'
+	
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU\" -name 'UseWUServer' -Value 0
+	
+Services 
+	Powershell
+	gsv servicename				-view
+	sasv servicename 			-start
+	spsv servicename 			-stop
+	restart-service servicename
+	
+	CMD
+	sc query servicename
+	sc start servicename
+	
+Delete user 
+	Get-CimInstance -Class Win32_UserProfile | select-object localpath,sid
+	Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.LocalPath.split(‘\’)[-1] -eq ‘username’ } | Remove-CimInstancea
